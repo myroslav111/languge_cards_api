@@ -1,9 +1,13 @@
 const getAllUsers = require('./getAllUsers');
-const getUserByEmail = require('./getUser');
-const getUserCurrentLang = require('./getUserLang');
+const addWord = require('./addWord');
+const deleteWord = require('./deleteWord');
+// const getUserByEmail = require('./getUser');
+// const getUserCurrentLang = require('./getUserLang');
 
 module.exports = {
   getAllUsers,
-  getUserByEmail,
-  getUserCurrentLang,
+  addWord,
+  deleteWord,
+  // getUserByEmail,
+  // getUserCurrentLang,
 };

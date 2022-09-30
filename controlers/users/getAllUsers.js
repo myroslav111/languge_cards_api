@@ -1,7 +1,7 @@
-const contacts = require('../../models/users');
+const { Card } = require('../../models/users');
 
 const getAllUsers = async (_, res) => {
-  const result = await contacts.listOfUsers();
+  const result = await Card.find();
   res.json(result);
 };
 

@@ -1,79 +1,55 @@
-const fs = require('fs/promises');
+const { Schema, model } = require('mongoose');
 
-const path = require('path');
+const Joi = require('joi');
 
-const { nanoid } = require('nanoid');
+/**
+ * regular expression for checking data that goes to database if we need
+ */
+// const someRegex = ....
 
-/** build path to our data */
-const pathContacts = path.resolve('models/users.json');
+/**
+ * create a new instance of Schema from mongoose
+ */
+const cardSchema = new Schema(
+  {
+    en: {
+      type: String,
+      unique: true,
+      required: [true, 'Set name for contact'],
+    },
+    ru: {
+      type: String,
+      required: true,
+    },
+  },
+  /** */
+  { versionKey: false, timestamps: true }
+);
 
-// pathContacts
-const listOfUsers = async () => {
-  const data = await fs.readFile(pathContacts, 'utf8');
-  return JSON.parse(data);
+// this foo it is middlewares for validate
+const handleSaveError = (error, data, next) => {
+  const { name, code } = error;
+  error.status = name === 'MongoServerError' && code === 11000 ? 409 : 400;
+  next();
 };
+cardSchema.post('save', handleSaveError);
 
-const getUserByEmail = async email => {
-  const users = await listOfUsers();
-  const user = users.find(user => user.email === email);
-  return user || null;
-};
+/** like type script typing data */
+const cardAddSchema = Joi.object({
+  en: Joi.string().required(),
+  ru: Joi.string().required(),
+});
 
-const getUserLang = async (email, lang) => {
-  const user = await getUserByEmail(email);
-  return lang === 'en' ? user.data : user.dataDe;
-};
+/**
+ *pass model of bd to object the first par is our name of bd second par is our shema of bd
+ */
+const Card = model('unauth-users', cardSchema);
 
-const getContactById = async contactId => {
-  const data = await fs.readFile(pathContacts, 'utf-8');
-  const contacts = JSON.parse(data);
-  const contact = contacts.find(el => el.id === contactId);
-  if (!contact) return null;
-  return contact;
-};
-
-const removeContact = async contactId => {
-  const contacts = await listOfUsers();
-  const indexOfContact = contacts.findIndex(
-    contact => contact.id === contactId
-  );
-  if (indexOfContact === -1) return null;
-  const updatedContacts = contacts.filter(contact => contact.id !== contactId);
-  await fs.writeFile(pathContacts, JSON.stringify(updatedContacts), 'utf8');
-  return contacts[indexOfContact];
-};
-
-const addContact = async body => {
-  const { name, email, phone } = body;
-  const newContact = {
-    id: nanoid(),
-    name,
-    email,
-    phone,
-  };
-  const contacts = await listOfUsers();
-  const updatedContacts = JSON.stringify([...contacts, newContact]);
-  await fs.writeFile(pathContacts, updatedContacts, 'utf8');
-  return newContact;
-};
-
-const updateContact = async (contactId, body) => {
-  const contacts = await listOfUsers();
-
-  const id = contactId.toString();
-  const index = contacts.findIndex(contact => contact.id === id);
-  if (index === -1) return null;
-  contacts[index] = { id, ...body };
-  await fs.writeFile(pathContacts, JSON.stringify(contacts), 'utf8');
-  return contacts[index];
+const schemasJoi = {
+  cardAddSchema,
 };
 
 module.exports = {
-  listOfUsers,
-  getUserByEmail,
-  getUserLang,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
+  Card,
+  schemasJoi,
 };

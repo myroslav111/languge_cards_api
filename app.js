@@ -2,12 +2,26 @@ const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 
+/**
+ * dotenv helps work with .env
+ */
+require('dotenv').config();
+
+/**
+ * import routs from routs
+ */
 const usersRouter = require('./routes/api/users');
 
+/**
+ * init expres
+ */
 const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
+/**
+ * this middleware helps to do logg
+ */
 app.use(logger(formatsLogger));
 
 /** this middleware helps solve problems related to cors */

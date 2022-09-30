@@ -3,8 +3,9 @@ const { RequestError } = require('../../helpers');
 
 const getUserCurrentLang = async (req, res) => {
   const { email, lang } = req.params;
-  console.log(req.params);
+
   const result = await contacts.getUserLang(email, lang);
+  console.log('getUserCurrentLang', result);
   if (!result) {
     throw RequestError(404, 'Not found');
   }

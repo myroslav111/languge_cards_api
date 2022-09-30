@@ -1,55 +1,36 @@
 const express = require('express');
 
+/**
+ *it looks like we are creating an object of routs
+ */
 const router = express.Router();
+
+/**
+ * middlewares for validate our date
+ */
+const { validateBody, isValidId } = require('../../middlewares');
+
+/**
+ * schema for validate data from frontend by means library Joi
+ */
+const { schemasJoi } = require('../../models/users');
 
 /**
  * our functions which one is responsible for operations with data depending on the route
  */
 const ctrl = require('../../controlers/users');
 
-/** in this wrapper  I took out try catch.  */
+/** in this wrapper is try catch.  */
 const { ctrlWrapper } = require('../../helpers');
-
-/** in this function I took out validation body of request */
-// const { validateBody } = require('../../middlewares');
-
-/** validation body of request */
-// const schema = require('../../schema/contactSchema');
 
 router.get('/', ctrlWrapper(ctrl.getAllUsers));
 
-router.get('/:email', ctrlWrapper(ctrl.getUserByEmail));
+router.delete('/:contactId', isValidId, ctrlWrapper(ctrl.deleteWord));
 
-router.get('/:email/:lang', ctrlWrapper(ctrl.getUserCurrentLang));
-
-// router.post(
-//   '/',
-//   validateBody(schema.contactsAddSchema),
-//   ctrlWrapper(ctrl.addContacts)
-// );
+router.post(
+  '/',
+  validateBody(schemasJoi.cardAddSchema),
+  ctrlWrapper(ctrl.addWord)
+);
 
 module.exports = router;
-
-// const contacts = require('../../models/contacts');
-// router.get('/:contactId', async (req, res, next) => {
-//   try {
-//     console.log(req.params);
-//     const { contactId } = req.params;
-//     const result = await contacts.getContactById(contactId);
-//     if (!result) {
-//       throw RequestError(404, 'Not found');
-//     }
-//     res.json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
-// router.get('/', async (req, res, next) => {
-//   try {
-//     const result = await contacts.listContacts();
-//     res.json(result);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
