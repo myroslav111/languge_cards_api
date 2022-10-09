@@ -11,6 +11,7 @@ require('dotenv').config();
  * import routs from routs
  */
 const usersRouter = require('./routes/api/users');
+const cardsRouter = require('./routes/api/cards');
 
 /**
  * init expres
@@ -32,6 +33,7 @@ app.use(express.json());
 
 /** here are send our routes */
 app.use('/api/users', usersRouter);
+app.use('/api/cards', cardsRouter);
 
 /** if front-end require for what is not */
 app.use((req, res) => {
