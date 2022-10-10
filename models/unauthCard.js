@@ -2,15 +2,13 @@ const { Schema, model } = require('mongoose');
 
 const Joi = require('joi');
 
-/**
- * regular expression for checking data that goes to database if we need
- */
-// const someRegex = ....
+const { handleSaveError } = require('../helpers');
+
 
 /**
  * create a new instance of Schema from mongoose
  */
-const cardSchema = new Schema(
+const unauthCardSchema = new Schema(
   {
     en: {
       type: String,
@@ -26,16 +24,11 @@ const cardSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-// this foo it is middlewares for validate
-const handleSaveError = (error, data, next) => {
-  const { name, code } = error;
-  error.status = name === 'MongoServerError' && code === 11000 ? 409 : 400;
-  next();
-};
-cardSchema.post('save', handleSaveError);
+
+unauthCardSchema.post('save', handleSaveError);
 
 /** like type script typing data */
-const cardAddSchema = Joi.object({
+const unauthCardAddSchema = Joi.object({
   en: Joi.string().required(),
   ru: Joi.string().required(),
 });
@@ -43,13 +36,13 @@ const cardAddSchema = Joi.object({
 /**
  *pass model of bd to object the first par is our name of bd second par is our shema of bd
  */
-const Card = model('unauth-users', cardSchema);
+const unauthCard = model('unauth-cards', unauthCardSchema);
 
 const schemasJoi = {
-  cardAddSchema,
+  unauthCardAddSchema,
 };
 
 module.exports = {
-  Card,
+  unauthCard,
   schemasJoi,
 };

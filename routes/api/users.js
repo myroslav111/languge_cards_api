@@ -1,10 +1,12 @@
 const express = require('express');
+const { ctrlWrapper } = require('../../helpers');
 
 /**
  *it looks like we are creating an object of routs
  */
 const router = express.Router();
 
+const ctrl = require('../../controlers/users');
 /**
  * middlewares for validate our date
  */
@@ -13,24 +15,16 @@ const { validateBody, isValidId } = require('../../middlewares');
 /**
  * schema for validate data from frontend by means library Joi
  */
-const { schemasJoi } = require('../../models/users');
+const { userSchemasJoi } = require('../../models/user');
 
-/**
- * our functions which one is responsible for operations with data depending on the route
- */
-const ctrl = require('../../controlers/users');
-
-/** in this wrapper is try catch.  */
-const { ctrlWrapper } = require('../../helpers');
-
-router.get('/', ctrlWrapper(ctrl.getAllUsers));
-
-router.delete('/:contactId', isValidId, ctrlWrapper(ctrl.deleteWord));
+router.get('/current', ctrlWrapper(ctrl));
 
 router.post(
   '/',
-  validateBody(schemasJoi.cardAddSchema),
-  ctrlWrapper(ctrl.addWord)
+  validateBody(userSchemasJoi.userAddSchema),
+  ctrlWrapper(ctrl)
 );
+
+router.delete('/:id', isValidId, ctrlWrapper(ctrl));
 
 module.exports = router;

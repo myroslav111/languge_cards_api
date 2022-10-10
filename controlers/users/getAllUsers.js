@@ -1,7 +1,7 @@
-const { Card } = require('../../models/users');
+const { User } = require('../../models/user');
 
 const getAllUsers = async (_, res) => {
-  const result = await Card.find();
+  const result = await User.find();
   res.json(result);
 };
 

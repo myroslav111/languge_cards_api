@@ -10,8 +10,10 @@ require('dotenv').config();
 /**
  * import routs from routs
  */
-const usersRouter = require('./routes/api/users');
+const unauthCardsRouter = require('./routes/api/unauthCards');
 const cardsRouter = require('./routes/api/cards');
+const usersRouter = require('./routes/api/users');
+
 
 /**
  * init expres
@@ -32,8 +34,10 @@ app.use(cors());
 app.use(express.json());
 
 /** here are send our routes */
-app.use('/api/users', usersRouter);
+app.use('/api/unauthCards', unauthCardsRouter);
 app.use('/api/cards', cardsRouter);
+app.use('/api/users', usersRouter);
+
 
 /** if front-end require for what is not */
 app.use((req, res) => {
