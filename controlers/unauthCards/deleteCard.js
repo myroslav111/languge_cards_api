@@ -1,9 +1,9 @@
 const { RequestError } = require('../../helpers');
-const { Card } = require('../../models/users');
+const { unauthCard } = require('../../models/unauthCard');
 
 const deleteWord = async (req, res) => {
-  const { contactId } = req.params;
-  const result = await Card.findByIdAndRemove(contactId);
+  const { id } = req.params;
+  const result = await unauthCard.findByIdAndRemove(id);
   if (!result) {
     throw RequestError(404, 'Not found');
   }

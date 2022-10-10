@@ -6,11 +6,11 @@ const { RequestError } = require('../helpers');
  *native mongoose foo
  */
 const isValidId = (req, res, next) => {
-  const { contactId } = req.params;
+  const { id } = req.params;
   console.log(req.params);
-  const result = isValidObjectId(contactId);
+  const result = isValidObjectId(id);
   if (!result) {
-    next(RequestError(404, `${contactId} is not valid id `));
+    next(RequestError(404, `${id} is not valid id `));
   }
   next();
 };

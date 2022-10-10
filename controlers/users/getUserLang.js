@@ -1,15 +1,15 @@
-const contacts = require('../../models/users');
-const { RequestError } = require('../../helpers');
+// const contacts = require('../../models/users');
+// const { RequestError } = require('../../helpers');
 
-const getUserCurrentLang = async (req, res) => {
-  const { email, lang } = req.params;
+// const getUserCurrentLang = async (req, res) => {
+//   const { email, lang } = req.params;
 
-  const result = await contacts.getUserLang(email, lang);
-  console.log('getUserCurrentLang', result);
-  if (!result) {
-    throw RequestError(404, 'Not found');
-  }
-  res.json(result);
-};
+//   const result = await contacts.getUserLang(email, lang);
+//   console.log('getUserCurrentLang', result);
+//   if (!result) {
+//     throw RequestError(404, 'Not found');
+//   }
+//   res.json(result);
+// };
 
-module.exports = getUserCurrentLang;
+// module.exports = getUserCurrentLang;

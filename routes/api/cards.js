@@ -10,7 +10,7 @@ const ctrl = require('../../controlers/cards');
 /**
  * middlewares for validate our date
  */
-const { validateBody } = require('../../middlewares');
+const { validateBody, isValidId } = require('../../middlewares');
 
 /**
  * schema for validate data from frontend by means library Joi
@@ -24,5 +24,7 @@ router.post(
   validateBody(cardSchemasJoi.cardAddSchema),
   ctrlWrapper(ctrl.addCard)
 );
+
+router.delete('/:id', isValidId, ctrlWrapper(ctrl.deleteCard));
 
 module.exports = router;
