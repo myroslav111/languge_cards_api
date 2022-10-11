@@ -6,7 +6,7 @@ const { ctrlWrapper } = require('../../helpers');
  */
 const router = express.Router();
 
-const ctrl = require('../../controlers/users');
+const ctrl = require('../../controllers/users');
 /**
  * middlewares for validate our date
  */
@@ -20,9 +20,16 @@ const { userSchemasJoi } = require('../../models/user');
 router.get('/current', ctrlWrapper(ctrl));
 
 router.post(
-  '/',
-  validateBody(userSchemasJoi.userAddSchema),
-  ctrlWrapper(ctrl)
+  '/register',
+  validateBody(userSchemasJoi.userRegisterSchema),
+  ctrlWrapper(ctrl.registerUser)
+);
+
+
+router.post(
+  '/login',
+  validateBody(userSchemasJoi.userLoginSchema),
+  ctrlWrapper(ctrl.loginUser)
 );
 
 router.delete('/:id', isValidId, ctrlWrapper(ctrl));

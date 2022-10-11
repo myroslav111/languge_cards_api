@@ -18,7 +18,7 @@ const { schemasJoi } = require('../../models/unauthCard');
 /**
  * our functions which one is responsible for operations with data depending on the route
  */
-const ctrl = require('../../controlers/unauthCards');
+const ctrl = require('../../controllers/unauthCards');
 
 /** in this wrapper is try catch.  */
 const { ctrlWrapper } = require('../../helpers');

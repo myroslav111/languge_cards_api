@@ -6,25 +6,26 @@ const { ctrlWrapper } = require('../../helpers');
  */
 const router = express.Router();
 
-const ctrl = require('../../controlers/cards');
+const ctrl = require('../../controllers/cards');
 /**
  * middlewares for validate our date
  */
-const { validateBody, isValidId } = require('../../middlewares');
+const { authenticate, validateBody, isValidId } = require('../../middlewares');
 
 /**
  * schema for validate data from frontend by means library Joi
  */
 const { cardSchemasJoi } = require('../../models/card');
 
-router.get('/', ctrlWrapper(ctrl.getAllCards));
+router.get('/', authenticate, ctrlWrapper(ctrl.getAllCards));
 
 router.post(
-  '/',
+  '/', 
+  authenticate,
   validateBody(cardSchemasJoi.cardAddSchema),
   ctrlWrapper(ctrl.addCard)
 );
 
-router.delete('/:id', isValidId, ctrlWrapper(ctrl.deleteCard));
+router.delete('/:id', authenticate, isValidId, ctrlWrapper(ctrl.deleteCard));
 
 module.exports = router;
