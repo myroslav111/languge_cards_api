@@ -23,14 +23,13 @@ const userSchema = new Schema(
 
     profilePic: {
       type: String,
-      required: true,
+      // required: true,
     },
 
-    // owner: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'user',
-    //   required: true,
-    // },
+    token: {
+    type: String,
+    default: null,
+  },
   },
   { versionKey: false, timestamps: true }
 );
@@ -40,15 +39,20 @@ userSchema.post('save', handleSaveError);
 
 
 /** like type script typing data */
-const userAddSchema = Joi.object({
+const userRegisterSchema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().required(),
     profilePic: Joi.string(),
 });
 
+const userLoginSchema = Joi.object({
+    email: Joi.string().required(),
+});
+
 
 const userSchemasJoi = {
-  userAddSchema,
+  userRegisterSchema,
+  userLoginSchema,
 };
 
 
