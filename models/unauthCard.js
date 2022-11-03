@@ -4,18 +4,17 @@ const Joi = require('joi');
 
 const { handleSaveError } = require('../helpers');
 
-
 /**
  * create a new instance of Schema from mongoose
  */
 const unauthCardSchema = new Schema(
   {
-    en: {
+    word: {
       type: String,
       unique: true,
       required: [true, 'Set name for contact'],
     },
-    ru: {
+    translation: {
       type: String,
       required: true,
     },
@@ -24,13 +23,12 @@ const unauthCardSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-
 unauthCardSchema.post('save', handleSaveError);
 
 /** like type script typing data */
 const unauthCardAddSchema = Joi.object({
-  en: Joi.string().required(),
-  ru: Joi.string().required(),
+  word: Joi.string().required(),
+  translation: Joi.string().required(),
 });
 
 /**
