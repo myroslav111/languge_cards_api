@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 /**
  * var from .env
  */
-const { DB_HOST, PORT = 3000 } = process.env;
+const { DB_HOST, PORT = 4000 } = process.env;
 
 /**
  * connection function from mongoose if conection with db true we will start servers else exit with code 1
